@@ -11,7 +11,7 @@ import Alamofire
 
 class PodcastsSearchController: UITableViewController {
     
-    var dummyPodcasts = [
+    var podcasts = [
         Podcast(trackName: "Let's build that app", artistName: "Brian Voong"),
         Podcast(trackName: "Some Podcast", artistName: "Some Author")
     ]
@@ -44,13 +44,13 @@ class PodcastsSearchController: UITableViewController {
     // MARK:- UITableView
     
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return dummyPodcasts.count
+        return podcasts.count
     }
     
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: cellID, for: indexPath)
         
-        let podcast = dummyPodcasts[indexPath.row]
+        let podcast = podcasts[indexPath.row]
         cell.textLabel?.text = "\(podcast.trackName ?? "")\n\(podcast.artistName ?? "")"
         cell.textLabel?.numberOfLines = -1
         cell.imageView?.image = #imageLiteral(resourceName: "appicon")
@@ -63,30 +63,9 @@ class PodcastsSearchController: UITableViewController {
 
 extension PodcastsSearchController: UISearchBarDelegate {
     func searchBar(_ searchBar: UISearchBar, textDidChange searchText: String) {
-        // Implement Alamofire to search iTunes APi
-        
-        let url = "https://itunes.apple.com/search"
-        let parameters = [
-            "term": searchText,
-            "media": "podcast"
-        ]
-        
-        Alamofire.request(url, method: .get, parameters: parameters, encoding: URLEncoding.default, headers: nil).responseData { (dataResponse) in
-            if let err = dataResponse.error {
-                print("Failed to contact yahoo", err)
-                return
-            }
-            
-            guard let data = dataResponse.data else { return }
-            
-            do {
-                let searchResult = try JSONDecoder().decode(SearchResults.self, from: data)
-                
-                self.dummyPodcasts = searchResult.results
-                self.tableView.reloadData()
-            } catch let decodeError {
-                print("Failed to decode", decodeError)
-            }
+        APIService.shared.fetchPodcasts(searchText: searchText) { (podcasts) in
+            self.podcasts = podcasts
+            self.tableView.reloadData()
         }
     }
 }
