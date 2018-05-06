@@ -1,5 +1,5 @@
 //
-//  Podcast.swift
+//  SearchResults.swift
 //  PodcastApp
 //
 //  Created by Christopher Lee on 6/5/18.
@@ -8,9 +8,7 @@
 
 import Foundation
 
-struct Podcast: Decodable {
-    var trackName: String?
-    var artistName: String?
+struct SearchResults: Decodable {
+    let resultCount: Int
+    let results: [Podcast]
 }
-
-

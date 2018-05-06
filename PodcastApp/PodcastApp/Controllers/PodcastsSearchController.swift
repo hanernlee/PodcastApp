@@ -7,12 +7,13 @@
 //
 
 import UIKit
+import Alamofire
 
 class PodcastsSearchController: UITableViewController {
     
-    let dummyPodcasts = [
-        Podcast(name: "Let's build that app", artistName: "Brian Voong"),
-        Podcast(name: "Some Podcast", artistName: "Some Author")
+    var dummyPodcasts = [
+        Podcast(trackName: "Let's build that app", artistName: "Brian Voong"),
+        Podcast(trackName: "Some Podcast", artistName: "Some Author")
     ]
     
     let searchController = UISearchController(searchResultsController: nil)
@@ -50,7 +51,7 @@ class PodcastsSearchController: UITableViewController {
         let cell = tableView.dequeueReusableCell(withIdentifier: cellID, for: indexPath)
         
         let podcast = dummyPodcasts[indexPath.row]
-        cell.textLabel?.text = "\(podcast.name)\n\(podcast.artistName)"
+        cell.textLabel?.text = "\(podcast.trackName ?? "")\n\(podcast.artistName ?? "")"
         cell.textLabel?.numberOfLines = -1
         cell.imageView?.image = #imageLiteral(resourceName: "appicon")
         
@@ -62,7 +63,30 @@ class PodcastsSearchController: UITableViewController {
 
 extension PodcastsSearchController: UISearchBarDelegate {
     func searchBar(_ searchBar: UISearchBar, textDidChange searchText: String) {
-        print(searchText)
         // Implement Alamofire to search iTunes APi
+        
+        let url = "https://itunes.apple.com/search"
+        let parameters = [
+            "term": searchText,
+            "media": "podcast"
+        ]
+        
+        Alamofire.request(url, method: .get, parameters: parameters, encoding: URLEncoding.default, headers: nil).responseData { (dataResponse) in
+            if let err = dataResponse.error {
+                print("Failed to contact yahoo", err)
+                return
+            }
+            
+            guard let data = dataResponse.data else { return }
+            
+            do {
+                let searchResult = try JSONDecoder().decode(SearchResults.self, from: data)
+                
+                self.dummyPodcasts = searchResult.results
+                self.tableView.reloadData()
+            } catch let decodeError {
+                print("Failed to decode", decodeError)
+            }
+        }
     }
 }
