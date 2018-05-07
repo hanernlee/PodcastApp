@@ -14,6 +14,8 @@
 		50B9C29B209E985300FB2B41 /* APIService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 50B9C29A209E985300FB2B41 /* APIService.swift */; };
 		50B9C2C2209F113D00FB2B41 /* PodcastCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 50B9C2C1209F113D00FB2B41 /* PodcastCell.xib */; };
 		50B9C2C4209F132C00FB2B41 /* PodcastCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 50B9C2C3209F132C00FB2B41 /* PodcastCell.swift */; };
+		50B9C31C20A03FD800FB2B41 /* EpisodesController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 50B9C31B20A03FD800FB2B41 /* EpisodesController.swift */; };
+		50B9C31E20A0438500FB2B41 /* Episode.swift in Sources */ = {isa = PBXBuildFile; fileRef = 50B9C31D20A0438500FB2B41 /* Episode.swift */; };
 		50D28053209C7718001F8CE3 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 50D28052209C7718001F8CE3 /* AppDelegate.swift */; };
 		50D28055209C7718001F8CE3 /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 50D28054209C7718001F8CE3 /* ViewController.swift */; };
 		50D28058209C7718001F8CE3 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 50D28056209C7718001F8CE3 /* Main.storyboard */; };
@@ -30,6 +32,8 @@
 		50B9C29A209E985300FB2B41 /* APIService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = APIService.swift; sourceTree = "<group>"; };
 		50B9C2C1209F113D00FB2B41 /* PodcastCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = PodcastCell.xib; sourceTree = "<group>"; };
 		50B9C2C3209F132C00FB2B41 /* PodcastCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PodcastCell.swift; sourceTree = "<group>"; };
+		50B9C31B20A03FD800FB2B41 /* EpisodesController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EpisodesController.swift; sourceTree = "<group>"; };
+		50B9C31D20A0438500FB2B41 /* Episode.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Episode.swift; sourceTree = "<group>"; };
 		50D2804F209C7718001F8CE3 /* PodcastApp.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = PodcastApp.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		50D28052209C7718001F8CE3 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		50D28054209C7718001F8CE3 /* ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
@@ -58,6 +62,7 @@
 			isa = PBXGroup;
 			children = (
 				50B9C292209E7D7300FB2B41 /* PodcastsSearchController.swift */,
+				50B9C31B20A03FD800FB2B41 /* EpisodesController.swift */,
 			);
 			path = Controllers;
 			sourceTree = "<group>";
@@ -67,6 +72,7 @@
 			children = (
 				50B9C295209E7DFC00FB2B41 /* Podcast.swift */,
 				50B9C297209E930E00FB2B41 /* SearchResults.swift */,
+				50B9C31D20A0438500FB2B41 /* Episode.swift */,
 			);
 			path = Models;
 			sourceTree = "<group>";
@@ -259,11 +265,13 @@
 				50B9C293209E7D7300FB2B41 /* PodcastsSearchController.swift in Sources */,
 				50B9C29B209E985300FB2B41 /* APIService.swift in Sources */,
 				50B9C2C4209F132C00FB2B41 /* PodcastCell.swift in Sources */,
+				50B9C31E20A0438500FB2B41 /* Episode.swift in Sources */,
 				50D28055209C7718001F8CE3 /* ViewController.swift in Sources */,
 				50D28053209C7718001F8CE3 /* AppDelegate.swift in Sources */,
 				50B9C28E209DB25B00FB2B41 /* MainTabBarController.swift in Sources */,
 				50B9C298209E930E00FB2B41 /* SearchResults.swift in Sources */,
 				50B9C296209E7DFC00FB2B41 /* Podcast.swift in Sources */,
+				50B9C31C20A03FD800FB2B41 /* EpisodesController.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -411,7 +419,10 @@
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_TEAM = TCJZB3N6X7;
 				INFOPLIST_FILE = PodcastApp/Info.plist;
-				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+				);
 				PRODUCT_BUNDLE_IDENTIFIER = io.hanernlee.PodcastApp;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_VERSION = 4.0;
@@ -427,7 +438,10 @@
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_TEAM = TCJZB3N6X7;
 				INFOPLIST_FILE = PodcastApp/Info.plist;
-				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+				);
 				PRODUCT_BUNDLE_IDENTIFIER = io.hanernlee.PodcastApp;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_VERSION = 4.0;
