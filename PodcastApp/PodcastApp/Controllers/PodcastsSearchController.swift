@@ -11,10 +11,7 @@ import Alamofire
 
 class PodcastsSearchController: UITableViewController {
     
-    var podcasts = [
-        Podcast(trackName: "Let's build that app", artistName: "Brian Voong"),
-        Podcast(trackName: "Some Podcast", artistName: "Some Author")
-    ]
+    var podcasts = [Podcast]()
     
     let searchController = UISearchController(searchResultsController: nil)
     
@@ -37,6 +34,8 @@ class PodcastsSearchController: UITableViewController {
     }
     
     fileprivate func setupTableView() {
+        tableView.tableFooterView = UIView()
+        
         // Register Cell
         let nib = UINib(nibName: "PodcastCell", bundle: nil)
         tableView.register(nib, forCellReuseIdentifier: cellID)
@@ -56,6 +55,18 @@ class PodcastsSearchController: UITableViewController {
     
     override func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
         return 132
+    }
+    
+    override func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
+        let label = UILabel()
+        label.textAlignment = .center
+        label.text = "Please enter a Search Term"
+        label.font = UIFont.systemFont(ofSize: 18, weight: .semibold)
+        return label
+    }
+    
+    override func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
+        return 250
     }
 }
 
