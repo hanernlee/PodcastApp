@@ -7,6 +7,8 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		5068108020A319AF00B36618 /* String.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5068107F20A319AF00B36618 /* String.swift */; };
+		5068108220A31B2F00B36618 /* RSSFeed.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5068108120A31B2F00B36618 /* RSSFeed.swift */; };
 		50B9C28E209DB25B00FB2B41 /* MainTabBarController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 50B9C28D209DB25B00FB2B41 /* MainTabBarController.swift */; };
 		50B9C293209E7D7300FB2B41 /* PodcastsSearchController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 50B9C292209E7D7300FB2B41 /* PodcastsSearchController.swift */; };
 		50B9C296209E7DFC00FB2B41 /* Podcast.swift in Sources */ = {isa = PBXBuildFile; fileRef = 50B9C295209E7DFC00FB2B41 /* Podcast.swift */; };
@@ -27,6 +29,8 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		5068107F20A319AF00B36618 /* String.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = String.swift; sourceTree = "<group>"; };
+		5068108120A31B2F00B36618 /* RSSFeed.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RSSFeed.swift; sourceTree = "<group>"; };
 		50B9C28D209DB25B00FB2B41 /* MainTabBarController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainTabBarController.swift; sourceTree = "<group>"; };
 		50B9C292209E7D7300FB2B41 /* PodcastsSearchController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PodcastsSearchController.swift; sourceTree = "<group>"; };
 		50B9C295209E7DFC00FB2B41 /* Podcast.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Podcast.swift; sourceTree = "<group>"; };
@@ -62,6 +66,15 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		5068107E20A3199800B36618 /* Extensions */ = {
+			isa = PBXGroup;
+			children = (
+				5068107F20A319AF00B36618 /* String.swift */,
+				5068108120A31B2F00B36618 /* RSSFeed.swift */,
+			);
+			path = Extensions;
+			sourceTree = "<group>";
+		};
 		50B9C28F209E7D2B00FB2B41 /* Controllers */ = {
 			isa = PBXGroup;
 			children = (
@@ -121,6 +134,7 @@
 		50D28051209C7718001F8CE3 /* PodcastApp */ = {
 			isa = PBXGroup;
 			children = (
+				5068107E20A3199800B36618 /* Extensions */,
 				50B9C299209E984300FB2B41 /* API */,
 				50B9C294209E7DE800FB2B41 /* Models */,
 				50B9C28F209E7D2B00FB2B41 /* Controllers */,
@@ -271,12 +285,14 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				5068108220A31B2F00B36618 /* RSSFeed.swift in Sources */,
 				50B9C293209E7D7300FB2B41 /* PodcastsSearchController.swift in Sources */,
 				50B9C29B209E985300FB2B41 /* APIService.swift in Sources */,
 				50B9C2C4209F132C00FB2B41 /* PodcastCell.swift in Sources */,
 				50B9C32520A1BA2000FB2B41 /* EpisodeCell.swift in Sources */,
 				50B9C31E20A0438500FB2B41 /* Episode.swift in Sources */,
 				50D28055209C7718001F8CE3 /* ViewController.swift in Sources */,
+				5068108020A319AF00B36618 /* String.swift in Sources */,
 				50D28053209C7718001F8CE3 /* AppDelegate.swift in Sources */,
 				50B9C28E209DB25B00FB2B41 /* MainTabBarController.swift in Sources */,
 				50B9C298209E930E00FB2B41 /* SearchResults.swift in Sources */,

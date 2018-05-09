@@ -31,34 +31,14 @@ class EpisodesController: UITableViewController {
     
     fileprivate func fetchEpisodes() {
         guard let feedURL = podcast.feedUrl else { return }
-        let secureFeedUrl = feedURL.contains("https") ? feedURL : feedURL.replacingOccurrences(of: "http", with: "https")
-        guard let url = URL(string: secureFeedUrl) else { return }
         
-        let parser = FeedParser(URL: url)
-        parser?.parseAsync(result: { (result) in
-            print("Successfully parse feed:", result.isSuccess)
+        APIService.shared.fetchEpisodes(feedURL: feedURL) { (episodes) in
+            self.episodes = episodes
             
-            // Associative enumeration values
-            switch result {
-            case let .rss(feed):
-                var episodes = [Episode]()
-                
-                feed.items?.forEach({ (feedItem) in
-                    let episode = Episode(feedItem: feedItem)
-                    episodes.append(episode)
-                })
-                
-                self.episodes = episodes
-                DispatchQueue.main.async {
-                    self.tableView.reloadData()
-                }
-                break
-            case let .failure(error):
-                print("Failed to parse feed:", error)
-                break
-            default: break
+            DispatchQueue.main.async {
+                self.tableView.reloadData()
             }
-        })
+        }
     }
     
     // MARK:- Setup Work
