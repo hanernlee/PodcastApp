@@ -6,6 +6,7 @@
     <dependencies>
         <deployment identifier="iOS"/>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="14088"/>
+        <capability name="Constraints to layout margins" minToolsVersion="6.0"/>
         <capability name="Safe area layout guides" minToolsVersion="9.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
@@ -27,7 +28,7 @@
                         </constraints>
                     </imageView>
                     <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" alignment="top" spacing="4" translatesAutoresizingMaskIntoConstraints="NO" id="d6f-WA-tQH">
-                        <rect key="frame" x="132" y="65.5" width="350" height="66"/>
+                        <rect key="frame" x="132" y="65.5" width="330" height="66"/>
                         <subviews>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="pubDate" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="PU1-hi-VKU">
                                 <rect key="frame" x="0.0" y="0.0" width="62.5" height="19.5"/>
@@ -51,10 +52,10 @@
                     </stackView>
                 </subviews>
                 <constraints>
-                    <constraint firstAttribute="trailing" secondItem="d6f-WA-tQH" secondAttribute="trailing" id="4Zl-9A-VAZ"/>
-                    <constraint firstItem="d6f-WA-tQH" firstAttribute="leading" secondItem="Az7-C1-n39" secondAttribute="trailing" constant="16" id="PVI-cp-ioo"/>
                     <constraint firstItem="Az7-C1-n39" firstAttribute="centerY" secondItem="H2p-sc-9uM" secondAttribute="centerY" id="bi8-Lz-Rjz"/>
-                    <constraint firstItem="d6f-WA-tQH" firstAttribute="centerY" secondItem="H2p-sc-9uM" secondAttribute="centerY" id="lQJ-3o-5E0"/>
+                    <constraint firstItem="d6f-WA-tQH" firstAttribute="centerY" secondItem="H2p-sc-9uM" secondAttribute="centerY" id="gzH-Kq-Nfo"/>
+                    <constraint firstAttribute="trailingMargin" secondItem="d6f-WA-tQH" secondAttribute="trailing" id="iul-ah-qyF"/>
+                    <constraint firstItem="d6f-WA-tQH" firstAttribute="leading" secondItem="Az7-C1-n39" secondAttribute="trailing" constant="16" id="uWm-gi-sZi"/>
                     <constraint firstItem="Az7-C1-n39" firstAttribute="leading" secondItem="H2p-sc-9uM" secondAttribute="leading" constant="16" id="v7Y-Z6-SWj"/>
                 </constraints>
             </tableViewCellContentView>
