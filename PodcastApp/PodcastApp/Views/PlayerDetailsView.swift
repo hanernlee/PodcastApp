@@ -28,6 +28,17 @@ class PlayerDetailsView: UIView {
         return avPlayer
     }()
     
+    override func awakeFromNib() {
+        super.awakeFromNib()
+        
+        let time = CMTimeMake(1, 3)
+        let times = [NSValue(time: time)]
+        player.addBoundaryTimeObserver(forTimes: times, queue: .main) {
+            print("Episode start playing")
+            self.enlargeEpisodeImageView()
+        }
+    }
+    
     // MARK:- IBAction and Outlets
     
     @IBAction func handleDismiss(_ sender: Any) {
@@ -42,7 +53,15 @@ class PlayerDetailsView: UIView {
     }
     
     @IBOutlet weak var authorLabel: UILabel!
-    @IBOutlet weak var episodeImageView: UIImageView!
+    @IBOutlet weak var episodeImageView: UIImageView! {
+        didSet {
+            episodeImageView.layer.cornerRadius = 5
+            episodeImageView.clipsToBounds = true
+            episodeImageView.transform = shrunkenTransform
+        }
+    }
+    
+    
     @IBOutlet weak var titleLabel: UILabel! {
         didSet {
             titleLabel.numberOfLines = 2
@@ -52,11 +71,27 @@ class PlayerDetailsView: UIView {
     @objc func handlePlayPause() {
         if player.timeControlStatus == .paused {
             player.play()
-            playPauseButton.setImage(#imageLiteral(resourceName: "play"), for: .normal)
+            playPauseButton.setImage(#imageLiteral(resourceName: "pause"), for: .normal)
+            enlargeEpisodeImageView()
         } else {
             player.pause()
-            playPauseButton.setImage(#imageLiteral(resourceName: "pause"), for: .normal)
+            playPauseButton.setImage(#imageLiteral(resourceName: "play"), for: .normal)
+            shrinkEpisodeImageView()
         }
+    }
+    
+    fileprivate let shrunkenTransform = CGAffineTransform(scaleX: 0.7, y: 0.7)
+    
+    fileprivate func shrinkEpisodeImageView() {
+        UIView.animate(withDuration: 0.75, delay: 0, usingSpringWithDamping: 0.5, initialSpringVelocity: 1, options: .curveEaseOut, animations: {
+            self.episodeImageView.transform = self.shrunkenTransform
+        })
+    }
+    
+    fileprivate func enlargeEpisodeImageView() {
+        UIView.animate(withDuration: 0.75, delay: 0, usingSpringWithDamping: 0.5, initialSpringVelocity: 1, options: .curveEaseOut, animations: {
+            self.episodeImageView.transform = .identity
+        })
     }
     
     fileprivate func playEpisode() {
