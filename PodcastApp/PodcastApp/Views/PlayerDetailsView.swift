@@ -47,6 +47,28 @@ class PlayerDetailsView: UIView {
         self.removeFromSuperview()
     }
     
+    @IBAction func handleCurrentTimeSliderChange(_ sender: Any) {
+        let percentage = currentTimeSlider.value
+        guard let duration = player.currentItem?.duration else { return }
+        let durationInSeconds = CMTimeGetSeconds(duration)
+        let seekTimeInSeconds = Float64(percentage) * durationInSeconds
+        let seekTime = CMTimeMakeWithSeconds(seekTimeInSeconds, 1)
+
+        player.seek(to: seekTime)
+    }
+
+    @IBAction func handleVolumeChange(_ sender: UISlider) {
+        player.volume = sender.value
+    }
+    
+    @IBAction func handleFastForward(_ sender: Any) {
+        seekToCurrentTime(delta: 15)
+    }
+    
+    @IBAction func handleRewind(_ sender: Any) {
+        seekToCurrentTime(delta: -15)
+    }
+    
     @IBOutlet weak var playPauseButton: UIButton! {
         didSet {
             playPauseButton.setImage(#imageLiteral(resourceName: "pause"), for: .normal)
@@ -62,7 +84,6 @@ class PlayerDetailsView: UIView {
             episodeImageView.transform = shrunkenTransform
         }
     }
-    
     
     @IBOutlet weak var titleLabel: UILabel! {
         didSet {
@@ -87,6 +108,11 @@ class PlayerDetailsView: UIView {
     }
     
     // MARK:- Fileprivate Func
+    fileprivate func seekToCurrentTime(delta: Int64) {
+        let fifteenSeconds = CMTimeMake(delta, 1)
+        let seekTime = CMTimeAdd(player.currentTime(), fifteenSeconds)
+        player.seek(to: seekTime)
+    }
     
     fileprivate let shrunkenTransform = CGAffineTransform(scaleX: 0.7, y: 0.7)
     
