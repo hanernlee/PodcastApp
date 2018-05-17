@@ -12,16 +12,15 @@ class MainTabBarController: UITabBarController {
     var maximizedTopAnchorConstraint: NSLayoutConstraint!
     var minimizedTopAnchorConstraint: NSLayoutConstraint!
     
+    let playerDetailsView = PlayerDetailsView.initFromNib()
+
     override func viewDidLoad() {
         super.viewDidLoad()
         
         tabBar.tintColor = .purple
         
         setupViewControllers()
-        
         setupPlayerDetailsView()
-        
-        perform(#selector(maximizePlayerDetails), with: nil, afterDelay: 1)
     }
     
     @objc func minimizePlayerDetails() {
@@ -30,23 +29,27 @@ class MainTabBarController: UITabBarController {
         
         UIView.animate(withDuration: 0.5, delay: 0, usingSpringWithDamping: 0.7, initialSpringVelocity: 1, options: .curveEaseOut, animations: {
             self.view.layoutIfNeeded()
+            self.tabBar.transform = .identity
         })
     }
     
-    @objc func maximizePlayerDetails() {
+    func maximizePlayerDetails(episode: Episode?) {
         maximizedTopAnchorConstraint.isActive = true
         maximizedTopAnchorConstraint.constant = 0
         minimizedTopAnchorConstraint.isActive = false
         
+        if episode != nil {
+            playerDetailsView.episode = episode
+        }
+        
         UIView.animate(withDuration: 0.5, delay: 0, usingSpringWithDamping: 0.7, initialSpringVelocity: 1, options: .curveEaseOut, animations: {
             self.view.layoutIfNeeded()
+            self.tabBar.transform = CGAffineTransform(translationX: 0, y: 100)
         })
     }
     
     // MARK:- Setup Player DetailsView
     fileprivate func setupPlayerDetailsView() {
-        let playerDetailsView = PlayerDetailsView.initFromNib()
-        playerDetailsView.backgroundColor = .red
         playerDetailsView.frame = view.frame
         
         view.insertSubview(playerDetailsView, belowSubview: tabBar)

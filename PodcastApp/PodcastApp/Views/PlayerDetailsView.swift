@@ -31,6 +31,8 @@ class PlayerDetailsView: UIView {
     override func awakeFromNib() {
         super.awakeFromNib()
         
+        addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(handleTapMaximize)))
+        
         observePlayerCurrentTime()
         
         let time = CMTimeMake(1, 3)
@@ -39,7 +41,6 @@ class PlayerDetailsView: UIView {
         // Player has a reference to self
         // Self has a reference to player
         player.addBoundaryTimeObserver(forTimes: times, queue: .main) { [weak self] in
-            print("Episode start playing")
             self?.enlargeEpisodeImageView()
         }
     }
@@ -55,7 +56,8 @@ class PlayerDetailsView: UIView {
     // MARK:- IBAction and Outlets
     
     @IBAction func handleDismiss(_ sender: Any) {
-        self.removeFromSuperview()
+        let mainTabBarController = UIApplication.shared.keyWindow?.rootViewController as? MainTabBarController
+        mainTabBarController?.minimizePlayerDetails()
     }
     
     @IBAction func handleCurrentTimeSliderChange(_ sender: Any) {
@@ -105,6 +107,12 @@ class PlayerDetailsView: UIView {
     @IBOutlet weak var currentTimeLabel: UILabel!
     @IBOutlet weak var durationLabel: UILabel!
     @IBOutlet weak var currentTimeSlider: UISlider!
+    
+    // MARK:- objc func
+    @objc func handleTapMaximize() {
+        let mainTabBarController = UIApplication.shared.keyWindow?.rootViewController as? MainTabBarController
+        mainTabBarController?.maximizePlayerDetails(episode: nil)
+    }
     
     @objc func handlePlayPause() {
         if player.timeControlStatus == .paused {
