@@ -17,6 +17,13 @@
             <rect key="frame" x="0.0" y="0.0" width="375" height="812"/>
             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
             <subviews>
+                <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="fh4-kw-erZ">
+                    <rect key="frame" x="0.0" y="44" width="375" height="64"/>
+                    <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                    <constraints>
+                        <constraint firstAttribute="height" constant="64" id="s8o-7O-RzO"/>
+                    </constraints>
+                </view>
                 <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" spacing="5" translatesAutoresizingMaskIntoConstraints="NO" id="2zI-OP-fhe">
                     <rect key="frame" x="24" y="44" width="327" height="710"/>
                     <subviews>
@@ -169,7 +176,10 @@
             <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
             <constraints>
                 <constraint firstItem="SX9-1F-vy8" firstAttribute="trailing" secondItem="2zI-OP-fhe" secondAttribute="trailing" constant="24" id="1jm-r3-lI5"/>
+                <constraint firstItem="SX9-1F-vy8" firstAttribute="trailing" secondItem="fh4-kw-erZ" secondAttribute="trailing" id="7it-ho-Qgn"/>
                 <constraint firstItem="SX9-1F-vy8" firstAttribute="bottom" secondItem="2zI-OP-fhe" secondAttribute="bottom" constant="24" id="QRd-Bv-D7X"/>
+                <constraint firstItem="fh4-kw-erZ" firstAttribute="leading" secondItem="SX9-1F-vy8" secondAttribute="leading" id="ZWh-sf-wjB"/>
+                <constraint firstItem="fh4-kw-erZ" firstAttribute="top" secondItem="SX9-1F-vy8" secondAttribute="top" id="aP8-FC-ama"/>
                 <constraint firstItem="2zI-OP-fhe" firstAttribute="leading" secondItem="SX9-1F-vy8" secondAttribute="leading" constant="24" id="cMW-tq-BGp"/>
                 <constraint firstItem="2zI-OP-fhe" firstAttribute="top" secondItem="SX9-1F-vy8" secondAttribute="top" id="vvc-Nm-2hV"/>
             </constraints>
