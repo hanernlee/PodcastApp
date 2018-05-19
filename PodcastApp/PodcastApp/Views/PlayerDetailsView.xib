@@ -19,8 +19,17 @@
             <subviews>
                 <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="fh4-kw-erZ">
                     <rect key="frame" x="0.0" y="44" width="375" height="64"/>
+                    <subviews>
+                        <stackView opaque="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="fZI-8X-PpW">
+                            <rect key="frame" x="8" y="8" width="359" height="48"/>
+                        </stackView>
+                    </subviews>
                     <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                     <constraints>
+                        <constraint firstAttribute="bottom" secondItem="fZI-8X-PpW" secondAttribute="bottom" constant="8" id="7HW-E9-xgb"/>
+                        <constraint firstItem="fZI-8X-PpW" firstAttribute="top" secondItem="fh4-kw-erZ" secondAttribute="top" constant="8" id="BbD-bd-kcM"/>
+                        <constraint firstItem="fZI-8X-PpW" firstAttribute="leading" secondItem="fh4-kw-erZ" secondAttribute="leading" constant="8" id="iaj-Oy-oTR"/>
+                        <constraint firstAttribute="trailing" secondItem="fZI-8X-PpW" secondAttribute="trailing" constant="8" id="oiG-eT-hs6"/>
                         <constraint firstAttribute="height" constant="64" id="s8o-7O-RzO"/>
                     </constraints>
                 </view>
