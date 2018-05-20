@@ -20,8 +20,38 @@
                 <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="fh4-kw-erZ">
                     <rect key="frame" x="0.0" y="44" width="375" height="64"/>
                     <subviews>
-                        <stackView opaque="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="fZI-8X-PpW">
+                        <stackView opaque="NO" contentMode="scaleToFill" spacing="8" translatesAutoresizingMaskIntoConstraints="NO" id="fZI-8X-PpW">
                             <rect key="frame" x="8" y="8" width="359" height="48"/>
+                            <subviews>
+                                <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="appicon" translatesAutoresizingMaskIntoConstraints="NO" id="cDG-QI-Tl3">
+                                    <rect key="frame" x="0.0" y="0.0" width="48" height="48"/>
+                                    <constraints>
+                                        <constraint firstAttribute="width" constant="48" id="YLU-VM-nOU"/>
+                                    </constraints>
+                                </imageView>
+                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Episode Title" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="MxY-ES-eo3">
+                                    <rect key="frame" x="56" y="0.0" width="191" height="48"/>
+                                    <fontDescription key="fontDescription" type="system" pointSize="15"/>
+                                    <nil key="textColor"/>
+                                    <nil key="highlightedColor"/>
+                                </label>
+                                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="UsB-Ip-Xfz">
+                                    <rect key="frame" x="255" y="0.0" width="48" height="48"/>
+                                    <constraints>
+                                        <constraint firstAttribute="width" constant="48" id="AaV-YP-l8x"/>
+                                    </constraints>
+                                    <color key="tintColor" cocoaTouchSystemColor="darkTextColor"/>
+                                    <state key="normal" title="Button" image="pause"/>
+                                </button>
+                                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Mrk-Ca-qiK">
+                                    <rect key="frame" x="311" y="0.0" width="48" height="48"/>
+                                    <constraints>
+                                        <constraint firstAttribute="width" constant="48" id="Apb-9g-yqf"/>
+                                    </constraints>
+                                    <color key="tintColor" cocoaTouchSystemColor="darkTextColor"/>
+                                    <state key="normal" image="fastforward15"/>
+                                </button>
+                            </subviews>
                         </stackView>
                     </subviews>
                     <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
@@ -199,6 +229,12 @@
                 <outlet property="currentTimeSlider" destination="DNL-sJ-eOq" id="plr-uI-r87"/>
                 <outlet property="durationLabel" destination="rLc-Ye-EMM" id="0W2-QB-aYs"/>
                 <outlet property="episodeImageView" destination="HVM-Tf-E9F" id="Dmz-h1-Joj"/>
+                <outlet property="maximizedStackView" destination="2zI-OP-fhe" id="jIf-V1-iyL"/>
+                <outlet property="miniEpisodeImageView" destination="cDG-QI-Tl3" id="oKB-7W-U9y"/>
+                <outlet property="miniFastForwardButton" destination="Mrk-Ca-qiK" id="Atm-Ro-9S9"/>
+                <outlet property="miniPlayPauseButton" destination="UsB-Ip-Xfz" id="gI8-6W-0PC"/>
+                <outlet property="miniPlayerView" destination="fh4-kw-erZ" id="AiG-Ho-Ojb"/>
+                <outlet property="miniTitleLabel" destination="MxY-ES-eo3" id="5do-IX-OuJ"/>
                 <outlet property="playPauseButton" destination="KqZ-Qa-t6g" id="rvW-WN-OIH"/>
                 <outlet property="titleLabel" destination="KbP-Hp-lnU" id="WlU-oM-tWE"/>
             </connections>
@@ -210,6 +246,7 @@
         <image name="fastforward15" width="45" height="45"/>
         <image name="max_volume" width="32" height="32"/>
         <image name="muted_volume" width="32" height="32"/>
+        <image name="pause" width="57" height="57"/>
         <image name="play" width="59" height="59"/>
         <image name="rewind15" width="45" height="45"/>
     </resources>

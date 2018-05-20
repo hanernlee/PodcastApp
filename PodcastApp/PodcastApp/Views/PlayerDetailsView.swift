@@ -12,12 +12,14 @@ import AVKit
 class PlayerDetailsView: UIView {
     var episode: Episode! {
         didSet {
+            miniTitleLabel.text = episode.title
             titleLabel.text = episode.title
             authorLabel.text = episode.author
             
             playEpisode()
             
             guard let url = URL(string: episode.imageUrl ?? "") else { return }
+            miniEpisodeImageView.sd_setImage(with: url, completed: nil)
             episodeImageView.sd_setImage(with: url, completed: nil)
         }
     }
@@ -108,6 +110,26 @@ class PlayerDetailsView: UIView {
     @IBOutlet weak var durationLabel: UILabel!
     @IBOutlet weak var currentTimeSlider: UISlider!
     
+    
+    @IBOutlet weak var miniPlayerView: UIView!
+    @IBOutlet weak var maximizedStackView: UIStackView!
+    
+    
+    @IBOutlet weak var miniEpisodeImageView: UIImageView!
+    @IBOutlet weak var miniTitleLabel: UILabel!
+    
+    @IBOutlet weak var miniPlayPauseButton: UIButton! {
+        didSet {
+            miniPlayPauseButton.addTarget(self, action: #selector(handlePlayPause), for: .touchUpInside)
+        }
+    }
+    @IBOutlet weak var miniFastForwardButton: UIButton! {
+        didSet {
+            miniFastForwardButton.addTarget(self, action: #selector(handleFastForward), for: .touchUpInside)
+        }
+    }
+    
+    
     // MARK:- objc func
     @objc func handleTapMaximize() {
         let mainTabBarController = UIApplication.shared.keyWindow?.rootViewController as? MainTabBarController
@@ -118,10 +140,12 @@ class PlayerDetailsView: UIView {
         if player.timeControlStatus == .paused {
             player.play()
             playPauseButton.setImage(#imageLiteral(resourceName: "pause"), for: .normal)
+            miniPlayPauseButton.setImage(#imageLiteral(resourceName: "pause"), for: .normal)
             enlargeEpisodeImageView()
         } else {
             player.pause()
             playPauseButton.setImage(#imageLiteral(resourceName: "play"), for: .normal)
+            miniPlayPauseButton.setImage(#imageLiteral(resourceName: "play"), for: .normal)
             shrinkEpisodeImageView()
         }
     }
