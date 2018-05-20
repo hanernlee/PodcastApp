@@ -8,6 +8,7 @@
 
 import UIKit
 import AVKit
+import MediaPlayer
 
 class PlayerDetailsView: UIView {
     var episode: Episode! {
@@ -34,6 +35,10 @@ class PlayerDetailsView: UIView {
     
     override func awakeFromNib() {
         super.awakeFromNib()
+        
+        setupRemoteControl()
+        
+        setupAudioSession()
         
         setupGestures()
 
@@ -153,6 +158,43 @@ class PlayerDetailsView: UIView {
     }
     
     // MARK:- Fileprivate Func
+    fileprivate func setupRemoteControl() {
+        UIApplication.shared.beginReceivingRemoteControlEvents()
+        
+        let commandCenter = MPRemoteCommandCenter.shared()
+        
+        commandCenter.playCommand.isEnabled = true
+        commandCenter.playCommand.addTarget { (_) -> MPRemoteCommandHandlerStatus in
+            self.player.play()
+            self.playPauseButton.setImage(#imageLiteral(resourceName: "pause"), for: .normal)
+            self.miniPlayPauseButton.setImage(#imageLiteral(resourceName: "pause"), for: .normal)
+            return .success
+        }
+        
+        commandCenter.pauseCommand.isEnabled = true
+        commandCenter.pauseCommand.addTarget { (_) -> MPRemoteCommandHandlerStatus in
+            self.player.pause()
+            self.playPauseButton.setImage(#imageLiteral(resourceName: "play"), for: .normal)
+            self.miniPlayPauseButton.setImage(#imageLiteral(resourceName: "play"), for: .normal)
+            return .success
+        }
+        
+        commandCenter.togglePlayPauseCommand.isEnabled = true
+        commandCenter.togglePlayPauseCommand.addTarget { (_) -> MPRemoteCommandHandlerStatus in
+            self.handlePlayPause()
+            return .success
+        }
+    }
+
+    fileprivate func setupAudioSession() {
+        do {
+            try AVAudioSession.sharedInstance().setCategory(AVAudioSessionCategoryPlayback)
+            try AVAudioSession.sharedInstance().setActive(true)
+        } catch let sessionErr {
+            print("Failed to activate session:", sessionErr)
+        }
+    }
+    
     fileprivate func seekToCurrentTime(delta: Int64) {
         let fifteenSeconds = CMTimeMake(delta, 1)
         let seekTime = CMTimeAdd(player.currentTime(), fifteenSeconds)
