@@ -42,6 +42,8 @@ class PlayerDetailsView: UIView {
     
     var panGesture: UIPanGestureRecognizer!
     
+    var playListEpisodes = [Episode]()
+    
     override func awakeFromNib() {
         super.awakeFromNib()
         
@@ -161,6 +163,48 @@ class PlayerDetailsView: UIView {
         }
     }
     
+    @objc func handleNextTrack() {
+        if playListEpisodes.count == 0 {
+            return
+        }
+        
+        let currentEpisodeIndex = playListEpisodes.index { (ep) -> Bool in
+            return self.episode.title == ep.title && self.episode.author == ep.author
+        }
+
+        guard let index = currentEpisodeIndex else { return }
+
+        let nextEpisode: Episode
+        if index == playListEpisodes.count - 1 {
+            nextEpisode = playListEpisodes[0]
+        } else {
+            nextEpisode = playListEpisodes[index + 1]
+        }
+        
+        self.episode = nextEpisode
+    }
+    
+    @objc func handlePreviousTrack() {
+        if playListEpisodes.count == 0 {
+            return
+        }
+        
+        let currentEpisodeIndex = playListEpisodes.index { (ep) -> Bool in
+            return self.episode.title == ep.title && self.episode.author == ep.author
+        }
+        
+        guard let index = currentEpisodeIndex else { return }
+        
+        let prevEpisode: Episode
+        if index == 0 {
+            prevEpisode = playListEpisodes[playListEpisodes.count - 1]
+        } else {
+            prevEpisode = playListEpisodes[index - 1]
+        }
+        
+        self.episode = prevEpisode
+    }
+    
     // MARK:- Fileprivate Func
     fileprivate func setupNowPlayingInfo() {
         var nowPlayingInfo = [String: Any]()
@@ -175,8 +219,6 @@ class PlayerDetailsView: UIView {
         
         let durationSeconds = CMTimeGetSeconds(duration)
         MPNowPlayingInfoCenter.default().nowPlayingInfo?[MPMediaItemPropertyPlaybackDuration] = durationSeconds
-        
-        
     }
     
     fileprivate func setupElapsedTime() {
@@ -212,6 +254,9 @@ class PlayerDetailsView: UIView {
             self.handlePlayPause()
             return .success
         }
+        
+        commandCenter.nextTrackCommand.addTarget(self, action: #selector(handleNextTrack))
+        commandCenter.previousTrackCommand.addTarget(self, action: #selector(handlePreviousTrack))
     }
 
     fileprivate func setupAudioSession() {
