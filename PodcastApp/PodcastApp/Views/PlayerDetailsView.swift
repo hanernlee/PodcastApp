@@ -17,10 +17,23 @@ class PlayerDetailsView: UIView {
             titleLabel.text = episode.title
             authorLabel.text = episode.author
             
+            setupNowPlayingInfo()
             playEpisode()
             
             guard let url = URL(string: episode.imageUrl ?? "") else { return }
             miniEpisodeImageView.sd_setImage(with: url, completed: nil)
+            miniEpisodeImageView.sd_setImage(with: url) { (image, _, _, _) in
+                guard let image = image else { return }
+                
+                // Lockscreen Artwork Code
+                var nowPlayingInfo = MPNowPlayingInfoCenter.default().nowPlayingInfo
+                let artwork = MPMediaItemArtwork(boundsSize: image.size, requestHandler: { (_) -> UIImage in
+                    return image
+                })
+                nowPlayingInfo?[MPMediaItemPropertyArtwork] = artwork
+                MPNowPlayingInfoCenter.default().nowPlayingInfo = nowPlayingInfo
+            }
+
             episodeImageView.sd_setImage(with: url, completed: nil)
         }
     }
@@ -37,9 +50,7 @@ class PlayerDetailsView: UIView {
         super.awakeFromNib()
         
         setupRemoteControl()
-        
         setupAudioSession()
-        
         setupGestures()
 
         observePlayerCurrentTime()
@@ -158,6 +169,14 @@ class PlayerDetailsView: UIView {
     }
     
     // MARK:- Fileprivate Func
+    fileprivate func setupNowPlayingInfo() {
+        var nowPlayingInfo = [String: Any]()
+        nowPlayingInfo[MPMediaItemPropertyTitle] = episode.title
+        nowPlayingInfo[MPMediaItemPropertyArtist] = episode.author
+        
+        MPNowPlayingInfoCenter.default().nowPlayingInfo = nowPlayingInfo
+    }
+    
     fileprivate func setupRemoteControl() {
         UIApplication.shared.beginReceivingRemoteControlEvents()
         
@@ -185,6 +204,19 @@ class PlayerDetailsView: UIView {
             return .success
         }
     }
+    
+    fileprivate func setupLockScreenCurrentTime() {
+        guard let currentTime = player.currentItem else { return }
+
+        let durationInSeconds = CMTimeGetSeconds(currentTime.duration)
+        let elapsedTime = CMTimeGetSeconds(player.currentTime())
+
+        var nowPlayingInfo = MPNowPlayingInfoCenter.default().nowPlayingInfo
+        nowPlayingInfo?[MPNowPlayingInfoPropertyElapsedPlaybackTime] = elapsedTime
+        nowPlayingInfo?[MPMediaItemPropertyPlaybackDuration] = durationInSeconds
+        
+        MPNowPlayingInfoCenter.default().nowPlayingInfo = nowPlayingInfo
+    }
 
     fileprivate func setupAudioSession() {
         do {
@@ -209,6 +241,8 @@ class PlayerDetailsView: UIView {
             self?.currentTimeLabel.text = time.toDisplayString()
             let durationTime = self?.player.currentItem?.duration
             self?.durationLabel.text = durationTime?.toDisplayString()
+            
+            self?.setupLockScreenCurrentTime()
             
             self?.updateCurrentTimeSlider()
         }
