@@ -23,15 +23,11 @@ class PlayerDetailsView: UIView {
             guard let url = URL(string: episode.imageUrl ?? "") else { return }
             miniEpisodeImageView.sd_setImage(with: url, completed: nil)
             miniEpisodeImageView.sd_setImage(with: url) { (image, _, _, _) in
-                guard let image = image else { return }
-                
-                // Lockscreen Artwork Code
-                var nowPlayingInfo = MPNowPlayingInfoCenter.default().nowPlayingInfo
-                let artwork = MPMediaItemArtwork(boundsSize: image.size, requestHandler: { (_) -> UIImage in
+                let image = self.episodeImageView.image ?? UIImage()
+                let artworkItem = MPMediaItemArtwork(boundsSize: .zero, requestHandler: { (size) -> UIImage in
                     return image
                 })
-                nowPlayingInfo?[MPMediaItemPropertyArtwork] = artwork
-                MPNowPlayingInfoCenter.default().nowPlayingInfo = nowPlayingInfo
+                MPNowPlayingInfoCenter.default().nowPlayingInfo?[MPMediaItemPropertyArtwork] = artworkItem
             }
 
             episodeImageView.sd_setImage(with: url, completed: nil)
@@ -55,12 +51,7 @@ class PlayerDetailsView: UIView {
 
         observePlayerCurrentTime()
         
-        let time = CMTimeMake(1, 3)
-        let times = [NSValue(time: time)]
-        
-        player.addBoundaryTimeObserver(forTimes: times, queue: .main) { [weak self] in
-            self?.enlargeEpisodeImageView()
-        }
+        observeBoundaryTime()
     }
     
     func setupGestures() {
@@ -91,6 +82,8 @@ class PlayerDetailsView: UIView {
         let seekTimeInSeconds = Float64(percentage) * durationInSeconds
         let seekTime = CMTimeMakeWithSeconds(seekTimeInSeconds, 1)
 
+        MPNowPlayingInfoCenter.default().nowPlayingInfo?[MPNowPlayingInfoPropertyElapsedPlaybackTime] = seekTimeInSeconds
+        
         player.seek(to: seekTime)
     }
 
@@ -177,6 +170,20 @@ class PlayerDetailsView: UIView {
         MPNowPlayingInfoCenter.default().nowPlayingInfo = nowPlayingInfo
     }
     
+    fileprivate func setupLockScreenDuration() {
+        guard let duration = player.currentItem?.duration else { return }
+        
+        let durationSeconds = CMTimeGetSeconds(duration)
+        MPNowPlayingInfoCenter.default().nowPlayingInfo?[MPMediaItemPropertyPlaybackDuration] = durationSeconds
+        
+        
+    }
+    
+    fileprivate func setupElapsedTime() {
+        let elapsedTime = CMTimeGetSeconds(player.currentTime())
+        MPNowPlayingInfoCenter.default().nowPlayingInfo?[MPNowPlayingInfoPropertyElapsedPlaybackTime] = elapsedTime
+    }
+    
     fileprivate func setupRemoteControl() {
         UIApplication.shared.beginReceivingRemoteControlEvents()
         
@@ -187,6 +194,7 @@ class PlayerDetailsView: UIView {
             self.player.play()
             self.playPauseButton.setImage(#imageLiteral(resourceName: "pause"), for: .normal)
             self.miniPlayPauseButton.setImage(#imageLiteral(resourceName: "pause"), for: .normal)
+            self.setupElapsedTime()
             return .success
         }
         
@@ -195,6 +203,7 @@ class PlayerDetailsView: UIView {
             self.player.pause()
             self.playPauseButton.setImage(#imageLiteral(resourceName: "play"), for: .normal)
             self.miniPlayPauseButton.setImage(#imageLiteral(resourceName: "play"), for: .normal)
+            self.setupElapsedTime()
             return .success
         }
         
@@ -203,19 +212,6 @@ class PlayerDetailsView: UIView {
             self.handlePlayPause()
             return .success
         }
-    }
-    
-    fileprivate func setupLockScreenCurrentTime() {
-        guard let currentTime = player.currentItem else { return }
-
-        let durationInSeconds = CMTimeGetSeconds(currentTime.duration)
-        let elapsedTime = CMTimeGetSeconds(player.currentTime())
-
-        var nowPlayingInfo = MPNowPlayingInfoCenter.default().nowPlayingInfo
-        nowPlayingInfo?[MPNowPlayingInfoPropertyElapsedPlaybackTime] = elapsedTime
-        nowPlayingInfo?[MPMediaItemPropertyPlaybackDuration] = durationInSeconds
-        
-        MPNowPlayingInfoCenter.default().nowPlayingInfo = nowPlayingInfo
     }
 
     fileprivate func setupAudioSession() {
@@ -235,15 +231,22 @@ class PlayerDetailsView: UIView {
     
     fileprivate let shrunkenTransform = CGAffineTransform(scaleX: 0.7, y: 0.7)
     
+    fileprivate func observeBoundaryTime() {
+        let time = CMTimeMake(1, 3)
+        let times = [NSValue(time: time)]
+        
+        player.addBoundaryTimeObserver(forTimes: times, queue: .main) { [weak self] in
+            self?.enlargeEpisodeImageView()
+            self?.setupLockScreenDuration()
+        }
+    }
+
     fileprivate func observePlayerCurrentTime() {
         let interval = CMTimeMake(1, 2)
         player.addPeriodicTimeObserver(forInterval: interval, queue: .main) { [weak self] (time) in
             self?.currentTimeLabel.text = time.toDisplayString()
             let durationTime = self?.player.currentItem?.duration
             self?.durationLabel.text = durationTime?.toDisplayString()
-            
-            self?.setupLockScreenCurrentTime()
-            
             self?.updateCurrentTimeSlider()
         }
     }
