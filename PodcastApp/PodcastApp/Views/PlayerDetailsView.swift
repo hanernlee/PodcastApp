@@ -35,21 +35,23 @@ class PlayerDetailsView: UIView {
     override func awakeFromNib() {
         super.awakeFromNib()
         
-        addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(handleTapMaximize)))
-        
-        panGesture = UIPanGestureRecognizer(target: self, action: #selector(handlePan))
-        addGestureRecognizer(panGesture)
-        
+        setupGestures()
+
         observePlayerCurrentTime()
         
         let time = CMTimeMake(1, 3)
         let times = [NSValue(time: time)]
         
-        // Player has a reference to self
-        // Self has a reference to player
         player.addBoundaryTimeObserver(forTimes: times, queue: .main) { [weak self] in
             self?.enlargeEpisodeImageView()
         }
+    }
+    
+    func setupGestures() {
+        addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(handleTapMaximize)))
+        panGesture = UIPanGestureRecognizer(target: self, action: #selector(handlePan))
+        miniPlayerView.addGestureRecognizer(panGesture)
+        maximizedStackView.addGestureRecognizer(UIPanGestureRecognizer(target: self, action: #selector(handleDismissalPan)))
     }
     
     static func initFromNib() -> PlayerDetailsView {
@@ -63,9 +65,7 @@ class PlayerDetailsView: UIView {
     // MARK:- IBAction and Outlets
     
     @IBAction func handleDismiss(_ sender: Any) {
-        let mainTabBarController = UIApplication.shared.keyWindow?.rootViewController as? MainTabBarController
-        mainTabBarController?.minimizePlayerDetails()
-        panGesture.isEnabled = true
+        UIApplication.mainTabBarController()?.minimizePlayerDetails()
     }
     
     @IBAction func handleCurrentTimeSliderChange(_ sender: Any) {
@@ -137,48 +137,7 @@ class PlayerDetailsView: UIView {
         }
     }
     
-    
     // MARK:- objc func
-    @objc func handleTapMaximize() {
-        let mainTabBarController = UIApplication.shared.keyWindow?.rootViewController as? MainTabBarController
-        mainTabBarController?.maximizePlayerDetails(episode: nil)
-        panGesture.isEnabled = false
-    }
-    
-    @objc func handlePan(gesture: UIPanGestureRecognizer) {
-        if gesture.state == .changed {
-            handlePanChanged(gesture: gesture)
-        } else if gesture.state == .ended {
-            handlePanEnded(gesture: gesture)
-        }
-    }
-    
-    func handlePanChanged(gesture: UIPanGestureRecognizer) {
-        let translation = gesture.translation(in: self.superview)
-        self.transform = CGAffineTransform(translationX: 0, y: translation.y)
-        
-        self.miniPlayerView.alpha = 1 + translation.y / 200
-        self.maximizedStackView.alpha = -translation.y / 200
-    }
-    
-    func handlePanEnded(gesture: UIPanGestureRecognizer) {
-        let translation = gesture.translation(in: self.superview)
-        let velocity = gesture.velocity(in: self.superview)
-        
-        UIView.animate(withDuration: 0.5, delay: 0, usingSpringWithDamping: 0.7, initialSpringVelocity: 2, options: .curveEaseOut, animations: {
-            self.transform = .identity
-            
-            if translation.y < 200 || velocity.y < -500 {
-                let mainTabBarController = UIApplication.shared.keyWindow?.rootViewController as? MainTabBarController
-                mainTabBarController?.maximizePlayerDetails(episode: nil)
-                gesture.isEnabled = false
-            } else {
-                self.miniPlayerView.alpha = 1
-                self.maximizedStackView.alpha = 0
-            }
-        })
-    }
-    
     @objc func handlePlayPause() {
         if player.timeControlStatus == .paused {
             player.play()
