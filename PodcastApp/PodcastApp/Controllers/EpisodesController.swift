@@ -46,10 +46,18 @@ class EpisodesController: UITableViewController {
     
     // MARK:- Setup Work
     fileprivate func setupNavigationBarButtons() {
-        navigationItem.rightBarButtonItems  = [
-            UIBarButtonItem(title: "Favourite", style: .plain, target: self, action: #selector(handleSaveFavourite)),
-            UIBarButtonItem(title: "Fetch", style: .plain, target: self, action: #selector(handleFetchSavedPodcasts))
-        ]
+        let savedPodcasts = UserDefaults.standard.savedPodcasts()
+        let hasFavourited = savedPodcasts.index(where: { $0.trackName == self.podcast.trackName && $0.artistName == self.podcast?.artistName }) != nil
+        
+        if hasFavourited {
+            navigationItem.rightBarButtonItems  = [
+                UIBarButtonItem(image: #imageLiteral(resourceName: "heart"), style: .plain, target: nil, action: nil)
+            ]
+        } else {
+            navigationItem.rightBarButtonItems  = [
+                UIBarButtonItem(title: "Favourite", style: .plain, target: self, action: #selector(handleSaveFavourite)),
+            ]
+        }
     }
     
     fileprivate func setupTableView() {
@@ -68,11 +76,18 @@ class EpisodesController: UITableViewController {
         // Transform Podcast into Data
         let data = NSKeyedArchiver.archivedData(withRootObject: listOfPodcasts)
         UserDefaults.standard.set(data, forKey: favouritedPodcastKey)
+        
+        showBadgeHighlight()
+        navigationItem.rightBarButtonItem = UIBarButtonItem(image: #imageLiteral(resourceName: "heart"), style: .plain, target: nil, action: nil)
+    }
+    
+    fileprivate func showBadgeHighlight() {
+        UIApplication.mainTabBarController()?.viewControllers?[0].tabBarItem.badgeValue = "New"
     }
     
     @objc fileprivate func handleFetchSavedPodcasts() {
         guard let data = UserDefaults.standard.data(forKey: favouritedPodcastKey) else { return }
-        let savedPodcasts = NSKeyedUnarchiver.unarchiveObject(with: data) as? [Podcast]
+        _ = NSKeyedUnarchiver.unarchiveObject(with: data) as? [Podcast]
     }
     
     // MARK:- UITableView
