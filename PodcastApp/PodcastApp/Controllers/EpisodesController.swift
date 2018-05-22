@@ -23,10 +23,13 @@ class EpisodesController: UITableViewController {
 
     fileprivate let cellId = "cellId"
     
+    let favouritedPodcastKey = "favouritePodcastKey"
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         
         setupTableView()
+        setupNavigationBarButtons()
     }
     
     fileprivate func fetchEpisodes() {
@@ -42,10 +45,31 @@ class EpisodesController: UITableViewController {
     }
     
     // MARK:- Setup Work
+    fileprivate func setupNavigationBarButtons() {
+        navigationItem.rightBarButtonItems  = [
+            UIBarButtonItem(title: "Favourite", style: .plain, target: self, action: #selector(handleSaveFavourite)),
+            UIBarButtonItem(title: "Fetch", style: .plain, target: self, action: #selector(handleFetchSavedPodcasts))
+        ]
+    }
+    
     fileprivate func setupTableView() {
         let nib = UINib(nibName: "EpisodeCell", bundle: nil)
         tableView.register(nib, forCellReuseIdentifier: cellId)
         tableView.tableFooterView = UIView()
+    }
+    
+    // MARK:- objc func
+    @objc fileprivate func handleSaveFavourite() {
+        guard let podcast = self.podcast else { return }
+        let data = NSKeyedArchiver.archivedData(withRootObject: podcast)
+        UserDefaults.standard.set(podcast, forKey: favouritedPodcastKey)
+    }
+    
+    @objc fileprivate func handleFetchSavedPodcasts() {
+        let value = UserDefaults.standard.value(forKey: favouritedPodcastKey) as? String
+        guard let data = UserDefaults.standard.data(forKey: favouritedPodcastKey) else { return }
+        let podcast = NSKeyedUnarchiver.unarchiveObject(with: data) as? Podcast
+        
     }
     
     // MARK:- UITableView
