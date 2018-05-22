@@ -9,6 +9,17 @@
 import UIKit
 
 class FavouritePodcastCell: UICollectionViewCell {
+    var podcast: Podcast! {
+        didSet {
+            print(podcast)
+            nameLabel.text = podcast.trackName
+            artistNameLabel.text = podcast.artistName
+            
+            let url = URL(string: podcast.artworkUrl600 ?? "")
+            imageView.sd_setImage(with: url)
+        }
+    }
+    
     let imageView = UIImageView(image: #imageLiteral(resourceName: "appicon"))
     let nameLabel = UILabel()
     let artistNameLabel = UILabel()
@@ -25,9 +36,7 @@ class FavouritePodcastCell: UICollectionViewCell {
     }
     
     fileprivate func stylizeUI() {
-        nameLabel.text = "Podcast Name"
         nameLabel.font = UIFont.systemFont(ofSize: 16, weight: .semibold)
-        artistNameLabel.text = "Artist Name"
         artistNameLabel.font = UIFont.systemFont(ofSize: 13)
         artistNameLabel.textColor = .lightGray
     }

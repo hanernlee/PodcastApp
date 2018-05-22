@@ -20,7 +20,7 @@ class Podcast: NSObject, Decodable, NSCoding {
         print("Trying to transform Data into Podcast")
         self.trackName = aDecoder.decodeObject(forKey: "trackNameKey") as? String
         self.artistName = aDecoder.decodeObject(forKey: "artistNameKey") as? String
-        self.trackName = aDecoder.decodeObject(forKey: "artworkKey") as? String
+        self.artworkUrl600 = aDecoder.decodeObject(forKey: "artworkKey") as? String
     }
     
     var trackName: String?
