@@ -9,9 +9,19 @@
 import UIKit
 
 class DownloadsController: UITableViewController {
+    
+    fileprivate let cellID = "cellID"
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        
+        setupTableView()
+    }
+    
+    
+    // MARK:- Fileprivate
+    fileprivate func setupTableView() {
+        let nib = UINib(nibName: "EpisodeCell", bundle: nil)
+        tableView.register(nib, forCellReuseIdentifier: cellID)
     }
 }
