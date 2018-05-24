@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		5002038C20B6E80500DA6609 /* DownloadsController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5002038B20B6E80500DA6609 /* DownloadsController.swift */; };
 		5068108020A319AF00B36618 /* String.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5068107F20A319AF00B36618 /* String.swift */; };
 		5068108220A31B2F00B36618 /* RSSFeed.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5068108120A31B2F00B36618 /* RSSFeed.swift */; };
 		506810E620A5B30D00B36618 /* PlayerDetailsView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 506810E520A5B30D00B36618 /* PlayerDetailsView.xib */; };
@@ -37,6 +38,7 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		5002038B20B6E80500DA6609 /* DownloadsController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DownloadsController.swift; sourceTree = "<group>"; };
 		5068107F20A319AF00B36618 /* String.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = String.swift; sourceTree = "<group>"; };
 		5068108120A31B2F00B36618 /* RSSFeed.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RSSFeed.swift; sourceTree = "<group>"; };
 		506810E520A5B30D00B36618 /* PlayerDetailsView.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = PlayerDetailsView.xib; sourceTree = "<group>"; };
@@ -100,6 +102,7 @@
 				50B9C292209E7D7300FB2B41 /* PodcastsSearchController.swift */,
 				50B9C31B20A03FD800FB2B41 /* EpisodesController.swift */,
 				50A2487520B2E4AA001002CE /* FavouritesController.swift */,
+				5002038B20B6E80500DA6609 /* DownloadsController.swift */,
 			);
 			path = Controllers;
 			sourceTree = "<group>";
@@ -333,6 +336,7 @@
 				50B9C296209E7DFC00FB2B41 /* Podcast.swift in Sources */,
 				50B66F3B20B44D86009C20EA /* UserDefaults.swift in Sources */,
 				50A2487620B2E4AA001002CE /* FavouritesController.swift in Sources */,
+				5002038C20B6E80500DA6609 /* DownloadsController.swift in Sources */,
 				50BA5BD520A9BBEF00D704CF /* CMTime.swift in Sources */,
 				50B9C31C20A03FD800FB2B41 /* EpisodesController.swift in Sources */,
 			);

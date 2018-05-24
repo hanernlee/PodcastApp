@@ -51,7 +51,7 @@ class EpisodesController: UITableViewController {
         
         if hasFavourited {
             navigationItem.rightBarButtonItems  = [
-                UIBarButtonItem(image: #imageLiteral(resourceName: "heart"), style: .plain, target: nil, action: nil)
+                UIBarButtonItem(image: #imageLiteral(resourceName: "heart").withRenderingMode(.alwaysOriginal), style: .plain, target: nil, action: nil)
             ]
         } else {
             navigationItem.rightBarButtonItems  = [
