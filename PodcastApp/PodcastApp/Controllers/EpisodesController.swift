@@ -92,6 +92,14 @@ class EpisodesController: UITableViewController {
     
     // MARK:- UITableView
     
+    override func tableView(_ tableView: UITableView, editActionsForRowAt indexPath: IndexPath) -> [UITableViewRowAction]? {
+        let downloadAction = UITableViewRowAction(style: .normal, title: "Download") { (_, _) in
+            print("Downloading into userdefault")
+        }
+        
+        return [downloadAction]
+    }
+    
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         let episode = self.episodes[indexPath.row]
         UIApplication.mainTabBarController()?.maximizePlayerDetails(episode: episode, playListEpisodes: self.episodes)
