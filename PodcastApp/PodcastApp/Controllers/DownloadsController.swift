@@ -12,10 +12,19 @@ class DownloadsController: UITableViewController {
     
     fileprivate let cellID = "cellID"
     
+    var episodes = UserDefaults.standard.downloadedEpisodes()
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         
         setupTableView()
+    }
+    
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        
+        episodes = UserDefaults.standard.downloadedEpisodes()
+        tableView.reloadData()
     }
     
     
@@ -28,11 +37,12 @@ class DownloadsController: UITableViewController {
     //MARAK:- UITableView
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: cellID, for: indexPath) as! EpisodeCell
+        cell.episode = episodes[indexPath.row]
         return cell
     }
     
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return 10
+        return episodes.count
     }
     
     override func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
