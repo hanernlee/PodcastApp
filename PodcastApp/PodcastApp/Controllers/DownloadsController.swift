@@ -41,6 +41,12 @@ class DownloadsController: UITableViewController {
         return cell
     }
     
+    override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        print("indexPath")
+        let episode = episodes[indexPath.row]
+        UIApplication.mainTabBarController()?.maximizePlayerDetails(episode: episode, playListEpisodes: episodes)
+    }
+    
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         return episodes.count
     }

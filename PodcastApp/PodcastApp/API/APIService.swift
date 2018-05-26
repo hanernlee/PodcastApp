@@ -59,4 +59,22 @@ class APIService {
             })
         }
     }
+    
+    func downloadEpisode(episode: Episode) {
+        let downloadRequest = DownloadRequest.suggestedDownloadDestination()
+        Alamofire.download(episode.streamUrl, to: downloadRequest).downloadProgress { (progress) in
+            print(progress.fractionCompleted)
+            }.response { (response) in
+                var downloadedEpisodes = UserDefaults.standard.downloadedEpisodes()
+                guard let index = downloadedEpisodes.index(where: { $0.title == episode.title && $0.author == episode.author }) else { return }
+                downloadedEpisodes[index].fileUrl = response.destinationURL?.absoluteString ?? ""
+                
+                do {
+                    let data = try JSONEncoder().encode(downloadedEpisodes)
+                    UserDefaults.standard.set(data, forKey: UserDefaults.downloadedEpisodeKey)
+                } catch let err {
+                    print("Failed to encode file downloaded episodes with file", err)
+                }
+        }
+    }
 }

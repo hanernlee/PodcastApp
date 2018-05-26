@@ -8,13 +8,13 @@
 
 import UIKit
 import FeedKit
+import Alamofire
 
 class EpisodesController: UITableViewController {
     
     var podcast: Podcast! {
         didSet {
             navigationItem.title = podcast.trackName
-            
             fetchEpisodes()
         }
     }
@@ -96,6 +96,10 @@ class EpisodesController: UITableViewController {
         let downloadAction = UITableViewRowAction(style: .normal, title: "Download") { (_, _) in
             let episode = self.episodes[indexPath.row]
             UserDefaults.standard.downloadEpisode(episode: episode)
+            
+            // Download podcast episode using alamofire
+            APIService.shared.downloadEpisode(episode: episode)
+            
         }
         
         return [downloadAction]
