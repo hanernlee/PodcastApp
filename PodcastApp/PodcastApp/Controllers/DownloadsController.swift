@@ -18,6 +18,7 @@ class DownloadsController: UITableViewController {
         super.viewDidLoad()
         
         setupTableView()
+        setupObservers()
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -32,6 +33,34 @@ class DownloadsController: UITableViewController {
     fileprivate func setupTableView() {
         let nib = UINib(nibName: "EpisodeCell", bundle: nil)
         tableView.register(nib, forCellReuseIdentifier: cellID)
+    }
+    
+    fileprivate func setupObservers() {
+        NotificationCenter.default.addObserver(self, selector: #selector(handleDownloadProgress), name: .downloadProgress, object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(handleDownloadComplete), name: .downloadComplete, object: nil)
+    }
+    
+    @objc func handleDownloadProgress(notification: Notification) {
+        guard let userInfo = notification.userInfo as? [String: Any] else { return }
+        guard let progress = userInfo["progress"] as? Double else { return }
+        guard let title = userInfo["title"] as? String else { return }
+        
+        guard let index = self.episodes.index(where: { $0.title == title }) else { return }
+        let indexPath = IndexPath(row: index, section: 0)
+        guard let cell = tableView.cellForRow(at: indexPath) as? EpisodeCell else { return }
+        cell.progressLabel.text = "\(Int(progress * 100))%"
+        cell.progressLabel.isHidden = false
+
+        if progress == 1 {
+            cell.progressLabel.isHidden = true
+        }
+    }
+    
+    @objc func handleDownloadComplete(notification: Notification) {
+        guard let episodeDownloadComplete = notification.object as? APIService.EpisodeDownloadCompleteTuple else { return }
+        guard let index = self.episodes.index(where: { $0.title == episodeDownloadComplete.episodeTitle }) else { return }
+        
+        self.episodes[index].fileUrl = episodeDownloadComplete.fileURL
     }
     
     //MARAK:- UITableView

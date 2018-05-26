@@ -99,7 +99,6 @@ class EpisodesController: UITableViewController {
             
             // Download podcast episode using alamofire
             APIService.shared.downloadEpisode(episode: episode)
-            
         }
         
         return [downloadAction]
